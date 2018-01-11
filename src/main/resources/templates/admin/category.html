@@ -28,9 +28,9 @@
     </style>
 </head>
 <body>
-<div class="container" style="margin-top:40px">
+<div class="container" style="margin-top:40px;" >
     <br />
-    <div class="row">
+    <div class="row" >
         <div class="col-md-2">
             <nav class="nav-sidebar">
                 <!--<ul class="nav">
@@ -48,78 +48,107 @@
                     <div class="dropdown">
                         <button class="btn btn-block dropdown-toggle" type="button" data-toggle="dropdown">
                             <a th:text="${#strings.toUpperCase(cat.name)}" th:href="@{'/admin/'+${#strings.toLowerCase(cat.name)}}">Category</a>
-                            <span class="caret"></span></button>
-                        <th:block th:each="subCat : ${cat.subCategories}">
-                            <ul class="dropdown-menu">
-                                <!--<th:block th:each="childSubCat : ${cat.subCategories.subCategoryList}">-->
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <th:block th:each="subCat : ${cat.subCategories}">
                                 <!--<li><a class="test" tabindex="-1" href="#">SabMenu <span class="caret"></span></a></li>-->
                                 <li class="dropdown-submenu">
                                     <a class="test" tabindex="-1" th:text="${#strings.toUpperCase(subCat.name)}"  href="#">HTML <span class="caret"></span></a>
                                     <!--<a class="test" tabindex="-1" href="#">New dropdown <span class="caret"></span></a>-->
-                                    <th:block th:each="childSubCat : ${subCat.subCategoryList}">
-                                        <ul class="dropdown-menu">
-                                            <li><a tabindex="-1" href="#">2nd level dropdown</a></li>
-                                            <li><a tabindex="-1" href="#">2nd level dropdown</a></li>
+                                    <ul class="dropdown-menu">
+                                        <th:block th:each="childSubCat : ${subCat.subCategoryList}">
+                                            <!--<li><a tabindex="-1" href="#">2nd level dropdown</a></li>
+                                            <li><a tabindex="-1" href="#">2nd level dropdown</a></li>-->
                                             <li class="dropdown-submenu">
                                                 <a class="test" th:text="${#strings.toUpperCase(childSubCat.name)}">Sub Category<span class="caret"></span></a>
                                                 <!--<a class="test" href="#">Another dropdown <span class="caret"></span></a>-->
-                                                <th:block th:each="childSubCatLast : ${childSubCat.subCategoryList}">
-                                                    <ul class="dropdown-menu">
+                                                <ul class="dropdown-menu">
+                                                    <th:block th:each="childSubCatLast : ${childSubCat.subCategoryList}">
                                                         <li><a class="test" th:text="${#strings.toUpperCase(childSubCatLast.name)}">Sub Category<span class="caret"></span></a></li>
                                                         <li><a href="#">Galaxy</a></li>
-                                                    </ul>
-                                                </th:block>
+                                                    </th:block>
+                                                    <!--CREATE ....SUBCATEGORY-->
+                                                    <li class="dropdown-submenu">
+                                                        <a class="test" tabindex="-1" href="#">Create <!--<span class="caret"></span>--></a>
+                                                        <!--<a class="test" tabindex="-1" href="#">New dropdown <span class="caret"></span></a>-->
+                                                        <ul class="dropdown-menu">
+                                                            <li>
+                                                                <form action="access-denied.html" th:action="@{/admin/create/subCategory}" method="post">
+                                                                    <fieldset>
+                                                                        <input type="hidden" name="catId" th:value="${cat.id}">
+                                                                        <input type="text" name="category" />
+                                                                        <input type="submit" value="Add"/>
+                                                                    </fieldset>
+                                                                </form>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
                                             </li>
-                                        </ul>
-                                    </th:block>
-                                </li>
-                            </ul>
-                        </th:block>
-                    </div>
-                    <br>
-                    
-                </th:block>
+                                        </th:block>
 
-
-
-
-                <!--<th:block th:each="cat : ${category}">
-                    <div class="dropdown">
-                        <button class="btn btn-block dropdown-toggle" type="button" data-toggle="dropdown">
-                            <a th:text="${#strings.toUpperCase(cat.name)}" th:href="@{'/admin/'+${#strings.toLowerCase(cat.name)}}">Category</a>
-                            <span class="caret"></span></button>
-                        <th:block th:each="subCat : ${cat.subCategories}">
-                            <ul class="dropdown-menu">
-                                &lt;!&ndash;<th:block th:each="childSubCat : ${cat.subCategories.subCategoryList}">&ndash;&gt;
-                                <li><a tabindex="-1" th:text="${#strings.toUpperCase(subCat.name)}"  href="#">HTML</a></li>
-                                <th:block th:each="childSubCat : ${subcategory}">
-                                <li class="dropdown-submenu">
-                                    <li><a tabindex="-1" th:text="${#strings.toUpperCase(childSubCat.name)}"  href="#">HTML</a></li>
-                                    &lt;!&ndash;<a class="test" tabindex="-1" href="#">New dropdown <span class="caret"></span></a>&ndash;&gt;
-                                    <ul class="dropdown-menu">
-                                        <li><a tabindex="-1" href="#">2nd level dropdown</a></li>
-                                        <li><a tabindex="-1" href="#">2nd level dropdown</a></li>
+                                        <!--CREATE CHILDSUBCATEGORY-->
                                         <li class="dropdown-submenu">
-                                            <a class="test" href="#">Another dropdown <span class="caret"></span></a>
+                                            <a class="test" tabindex="-1" href="#">Create <!--<span class="caret"></span>--></a>
+                                            <!--<a class="test" tabindex="-1" href="#">New dropdown <span class="caret"></span></a>-->
                                             <ul class="dropdown-menu">
-                                                <li><a href="#">3rd level dropdown</a></li>
-                                                <li><a href="#">3rd level dropdown</a></li>
+                                                <li>
+                                                    <form action="access-denied.html" th:action="@{/admin/create/childSubCategory}" method="post">
+                                                        <fieldset>
+                                                            <input type="hidden" name="catId" th:value="${subCat.id}">
+                                                            <input type="text" name="category" />
+                                                            <input type="submit" value="Add"/>
+                                                        </fieldset>
+                                                    </form>
+                                                </li>
                                             </ul>
                                         </li>
                                     </ul>
                                 </li>
-                                </th:block>
-                            </ul>
-                        </th:block>
+                            </th:block>
+
+                            <!--CREATE SUBCATEGORY-->
+                            <li class="dropdown-submenu">
+                                <a class="test" tabindex="-1" href="#">Create <!--<span class="caret"></span>--></a>
+                                <!--<a class="test" tabindex="-1" href="#">New dropdown <span class="caret"></span></a>-->
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <form action="access-denied.html" th:action="@{/admin/create/subCategory}" method="post">
+                                            <fieldset>
+                                                <input type="hidden" name="catId" th:value="${cat.id}">
+                                                <input type="text" name="category" />
+                                                <input type="submit" value="Add"/>
+                                            </fieldset>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
                     <br>
-                </th:block>-->
+                </th:block>
 
-
-
+                <!-- CREATE CATEGORY -->
+                <div class="dropdown">
+                    <button class="btn btn-block dropdown-toggle" type="button" data-toggle="dropdown">Create <!--<span class="caret">--></span></button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <form action="access-denied.html" th:action="@{/admin/create/category}" method="post">
+                                <fieldset>
+                                    <input type="hidden" name="catId">
+                                    <input type="text" name="category" />
+                                    <input type="submit" value="Add"/>
+                                </fieldset>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
 
             </nav>
         </div>
+
+        <!--Main Body -->
         <div class="col-md-8 ">
             <!--<nav class="nav-sidebar pull-right">-->
             <!--<ul class="nav">

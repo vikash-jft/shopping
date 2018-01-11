@@ -15,8 +15,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.model.User;
@@ -123,24 +125,40 @@ public class LoginController {
 
 		List<Category> category=categoryRepository.findAll();
 		model.addAttribute("category",category);
-		/*List<SubCategory> subCategories=new ArrayList<SubCategory>();
-		for (Category category1:category) {
-			SubCategory subCategory=subCategoryRepository.getOne(category1.getId());
-			subCategories.add(subCategory);
-		}*/
-		/*List<SubCategory> subCategories=subCategoryRepository.findAll();
-		for (Category category1: category ) {
-			for (SubCategory subCategory:subCategories) {
-				if (category1.getId() == subCategory.getChildSubCategory().getId()){
-
-				}
-			}
-		}
-		model.addAttribute("subcategory",subCategories);*/
-
-
 
 		return "admin/category";
 	}
+
+	@RequestMapping(value="admin/create/{categoryType}", method = RequestMethod.POST)
+	public String createCategory(@RequestParam String category,@RequestParam Integer catId, @PathVariable String categoryType) {
+		if (categoryType.equalsIgnoreCase("category")) {
+			Category category1 = new Category();
+			category1.setName(category);
+			categoryRepository.save(category1);
+			//model.addAttribute("category",category);
+
+		} else if (categoryType.equalsIgnoreCase("subCategory")){
+
+
+			Category getCategory=categoryRepository.getOne(catId);
+
+			SubCategory saveSubCategory=new SubCategory();
+			saveSubCategory.setName(category);
+			saveSubCategory.setCategory(getCategory);
+
+			subCategoryRepository.save(saveSubCategory);
+		}
+		else if(categoryType.equalsIgnoreCase("childSubCategory")){
+
+			SubCategory childSubCategory=subCategoryRepository.getOne(catId);
+			SubCategory saveChildSubCategory=new SubCategory();
+						saveChildSubCategory.setName(category);
+						saveChildSubCategory.setChildSubCategory(childSubCategory);
+			subCategoryRepository.save(saveChildSubCategory);
+
+		}
+		return "redirect:/admin/category";
+	}
+
 
 }
